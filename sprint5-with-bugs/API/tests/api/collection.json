@@ -1,0 +1,80 @@
+{
+    "info": {
+        "_postman_id": "93f7152b-7da8-4066-b7d9-2d4aa3074f92",
+        "name": "Login API Tests",
+        "description": "Test API login với các tài khoản khác nhau (data-driven)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "38685069"
+    },
+    "item": [
+        {
+            "name": "Login Success or Fail (Data-driven)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "// Kiểm tra status code đúng với expected_status từ CSV",
+                            "pm.test(\"Status code matches expected\", function () {",
+                            "    pm.response.to.have.status(Number(pm.iterationData.get(\"expected_status\")));",
+                            "});",
+                            "",
+                            "// Nếu thành công (200), kiểm tra các trường bắt buộc",
+                            "if (pm.response.code === 200) {",
+                            "    const responseData = pm.response.json();",
+                            "    pm.test(\"Response has required fields\", function () {",
+                            "        pm.expect(responseData).to.be.an('object');",
+                            "        pm.expect(responseData).to.have.all.keys('access_token', 'token_type', 'expires_in');",
+                            "    });",
+                            "    pm.test(\"Access token must be a non-empty string\", function () {",
+                            "        pm.expect(responseData.access_token).to.exist.and.to.be.a('string').and.to.have.lengthOf.above(0);",
+                            "    });",
+                            "    pm.test(\"Token type must be a non-empty string\", function () {",
+                            "        pm.expect(responseData.token_type).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1);",
+                            "    });",
+                            "    pm.test(\"Expires_in must be a positive integer\", function () {",
+                            "        pm.expect(responseData.expires_in).to.exist.and.to.be.a('number').and.to.be.above(0);",
+                            "    });",
+                            "} else if (pm.response.code === 401) {",
+                            "    // Nếu thất bại, kiểm tra có trường error",
+                            "    const responseData = pm.response.json();",
+                            "    pm.test(\"Response contains the required error field\", function () {",
+                            "        pm.expect(responseData).to.be.an('object').and.to.have.property('error');",
+                            "    });",
+                            "    pm.test(\"Error message must be a non-empty string\", function () {",
+                            "        pm.expect(responseData.error).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1);",
+                            "    });",
+                            "}"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/users/login",
+                    "host": ["{{base_url}}"],
+                    "path": ["users", "login"]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8091"
+        }
+    ]
+}
