@@ -8,135 +8,59 @@
     },
     "item": [
         {
-            "name": "Login Tests",
+            "name": "User API Test",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [
+                            "const api = pm.iterationData.get('api');",
+                            "pm.environment.set('run_api', api);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "item": [
                 {
-                    "name": "Login Success or Fail (Data-driven)",
+                    "name": "Login",
                     "event": [
                         {
-                            "listen": "test",
+                            "listen": "prerequest",
                             "script": {
                                 "exec": [
-                                    "pm.test('Status code matches expected', function () {",
-                                    "    const expectedStatus = pm.iterationData.get('expected_status');",
-                                    "    pm.response.to.have.status(Number(expectedStatus));",
-                                    "});",
-                                    "if (pm.response.code === 200) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response has required fields', function () {",
-                                    "        pm.expect(responseData).to.be.an('object').and.to.have.all.keys('access_token', 'token_type', 'expires_in');",
-                                    "    });",
-                                    "    pm.test('Access token is a non-empty string', function () {",
-                                    "        pm.expect(responseData.access_token).to.be.a('string').and.to.have.lengthOf.above(0);",
-                                    "    });",
-                                    "    pm.environment.set('access_token', responseData.access_token);",
-                                    "} else if ([400, 401, 403, 422].includes(pm.response.code)) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response contains error or validation fields', function () {",
-                                    "        pm.expect(responseData).to.have.any.keys('error', 'message', 'email', 'password');",
-                                    "    });",
+                                    "if (pm.environment.get('run_api') !== 'login') {",
+                                    "    pm.execution.skipRequest();",
                                     "}"
                                 ],
                                 "type": "text/javascript"
                             }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"email\": \"{{email}}\", \"password\": \"{{password}}\"}"
                         },
-                        "url": {
-                            "raw": "{{base_url}}/users/login",
-                            "host": ["{{base_url}}"],
-                            "path": ["users", "login"]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Register Tests",
-            "item": [
-                {
-                    "name": "Register New User (Data-driven)",
-                    "event": [
                         {
                             "listen": "test",
                             "script": {
                                 "exec": [
-                                    "pm.test('Status code matches expected', function () {",
-                                    "    const expectedStatus = pm.iterationData.get('expected_status');",
-                                    "    pm.response.to.have.status(Number(expectedStatus));",
-                                    "});",
-                                    "if (pm.response.code === 201) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response has required fields', function () {",
-                                    "        pm.expect(responseData).to.be.an('object').and.to.have.all.keys('id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob', 'email');",
+                                    "if (pm.environment.get('run_api') === 'login') {",
+                                    "    pm.test('Status code matches expected', function () {",
+                                    "        const expectedStatus = pm.iterationData.get('expected_status');",
+                                    "        pm.response.to.have.status(Number(expectedStatus));",
                                     "    });",
-                                    "    pm.test('ID is a positive integer', function () {",
-                                    "        pm.expect(responseData.id).to.be.a('number').and.to.be.above(0);",
-                                    "    });",
-                                    "    pm.test('Email matches input', function () {",
-                                    "        pm.expect(responseData.email).to.equal(pm.iterationData.get('email'));",
-                                    "    });",
-                                    "} else if (pm.response.code === 422) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response contains validation errors', function () {",
-                                    "        pm.expect(responseData).to.have.any.keys('password', 'email', 'dob', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone');",
-                                    "    });",
+                                    "    if (pm.response.code === 200) {",
+                                    "        const responseData = pm.response.json();",
+                                    "        pm.test('Response has required fields', function () {",
+                                    "            pm.expect(responseData).to.be.an('object').and.to.have.all.keys('access_token', 'token_type', 'expires_in');",
+                                    "        });",
+                                    "        pm.test('Access token is a non-empty string', function () {",
+                                    "            pm.expect(responseData.access_token).to.be.a('string').and.to.have.lengthOf.above(0);",
+                                    "        });",
+                                    "        pm.environment.set('access_token', responseData.access_token);",
+                                    "    } else if ([400, 401, 403, 422].includes(pm.response.code)) {",
+                                    "        const responseData = pm.response.json();",
+                                    "        pm.test('Response contains error or validation fields', function () {",
+                                    "            pm.expect(responseData).to.have.any.keys('error', 'message', 'email', 'password');",
+                                    "        });",
+                                    "    }",
                                     "}"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"first_name\": \"{{first_name}}\", \"last_name\": \"{{last_name}}\", \"address\": \"{{address}}\", \"city\": \"{{city}}\", \"state\": \"{{state}}\", \"country\": \"{{country}}\", \"postcode\": \"{{postcode}}\", \"phone\": \"{{phone}}\", \"dob\": \"{{dob}}\", \"email\": \"{{email}}\", \"password\": \"{{password}}\"}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/users/register",
-                            "host": ["{{base_url}}"],
-                            "path": ["users", "register"]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Update Tests",
-            "item": [
-                {
-                    "name": "Login to Get Access Token",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": [
-                                    "pm.test('Login successful to get token', function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.expect(responseData).to.have.property('access_token');",
-                                    "    pm.environment.set('access_token', responseData.access_token);",
-                                    "});"
                                 ],
                                 "type": "text/javascript"
                             }
@@ -163,30 +87,45 @@
                     "response": []
                 },
                 {
-                    "name": "Update User (Data-driven)",
+                    "name": "Register",
                     "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "exec": [
+                                    "if (pm.environment.get('run_api') !== 'register') {",
+                                    "    pm.execution.skipRequest();",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        },
                         {
                             "listen": "test",
                             "script": {
                                 "exec": [
-                                    "pm.test('Status code matches expected', function () {",
-                                    "    const expectedStatus = pm.iterationData.get('expected_status');",
-                                    "    pm.response.to.have.status(Number(expectedStatus));",
-                                    "});",
-                                    "if (pm.response.code === 200) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response indicates success', function () {",
-                                    "        pm.expect(responseData).to.be.an('object').and.to.have.property('success', true);",
+                                    "if (pm.environment.get('run_api') === 'register') {",
+                                    "    pm.test('Status code matches expected', function () {",
+                                    "        const expectedStatus = pm.iterationData.get('expected_status');",
+                                    "        pm.response.to.have.status(Number(expectedStatus));",
                                     "    });",
-                                    "} else if ([401, 403, 404, 422].includes(pm.response.code)) {",
-                                    "    const responseData = pm.response.json();",
-                                    "    pm.test('Response contains error or validation fields', function () {",
-                                    "        pm.expect(responseData).to.have.any.keys('message', 'error', 'email', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob');",
-                                    "    });",
-                                    "} else if (pm.response.code === 405) {",
-                                    "    pm.test('Method Not Allowed - Bug detected', function () {",
-                                    "        pm.expect.fail('API returned 405 Method Not Allowed, indicating a possible route misconfiguration');",
-                                    "    });",
+                                    "    if (pm.response.code === 201) {",
+                                    "        const responseData = pm.response.json();",
+                                    "        pm.test('Response has required fields', function () {",
+                                    "            pm.expect(responseData).to.be.an('object').and.to.have.all.keys('id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob', 'email');",
+                                    "        });",
+                                    "        pm.test('ID is a positive integer', function () {",
+                                    "            pm.expect(responseData.id).to.be.a('number').and.to.be.above(0);",
+                                    "        });",
+                                    "        pm.test('Email matches input', function () {",
+                                    "            pm.expect(responseData.email).to.equal(pm.iterationData.get('email'));",
+                                    "        });",
+                                    "    } else if (pm.response.code === 422) {",
+                                    "        const responseData = pm.response.json();",
+                                    "        pm.test('Response contains validation errors', function () {",
+                                    "            pm.expect(responseData).to.have.any.keys('password', 'email', 'dob', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone');",
+                                    "        });",
+                                    "    }",
                                     "}"
                                 ],
                                 "type": "text/javascript"
@@ -194,28 +133,148 @@
                         }
                     ],
                     "request": {
-                        "method": "PUT",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
                                 "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"first_name\": \"{{first_name}}\", \"last_name\": \"{{last_name}}\", \"address\": \"{{address}}\", \"city\": \"{{city}}\", \"state\": \"{{state}}\", \"country\": \"{{country}}\", \"postcode\": \"{{postcode}}\", \"phone\": \"{{phone}}\", \"dob\": \"{{dob}}\", \"email\": \"{{email_update}}\"}"
+                            "raw": "{\"first_name\": \"{{first_name}}\", \"last_name\": \"{{last_name}}\", \"address\": \"{{address}}\", \"city\": \"{{city}}\", \"state\": \"{{state}}\", \"country\": \"{{country}}\", \"postcode\": \"{{postcode}}\", \"phone\": \"{{phone}}\", \"dob\": \"{{dob}}\", \"email\": \"{{email}}\", \"password\": \"{{password}}\"}"
                         },
                         "url": {
-                            "raw": "{{base_url}}/users/{{userId}}",
+                            "raw": "{{base_url}}/users/register",
                             "host": ["{{base_url}}"],
-                            "path": ["users", "{{userId}}"]
+                            "path": ["users", "register"]
                         }
                     },
                     "response": []
+                },
+                {
+                    "name": "Update",
+                    "item": [
+                        {
+                            "name": "Login to Get Access Token",
+                            "event": [
+                                {
+                                    "listen": "prerequest",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.environment.get('run_api') !== 'update') {",
+                                            "    pm.execution.skipRequest();",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                },
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.environment.get('run_api') === 'update') {",
+                                            "    pm.test('Login successful to get token', function () {",
+                                            "        pm.response.to.have.status(200);",
+                                            "        const responseData = pm.response.json();",
+                                            "        pm.expect(responseData).to.have.property('access_token');",
+                                            "        pm.environment.set('access_token', responseData.access_token);",
+                                            "    });",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\": \"{{email}}\", \"password\": \"{{password}}\"}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/users/login",
+                                    "host": ["{{base_url}}"],
+                                    "path": ["users", "login"]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update User",
+                            "event": [
+                                {
+                                    "listen": "prerequest",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.environment.get('run_api') !== 'update') {",
+                                            "    pm.execution.skipRequest();",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                },
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.environment.get('run_api') === 'update') {",
+                                            "    pm.test('Status code matches expected', function () {",
+                                            "        const expectedStatus = pm.iterationData.get('expected_status');",
+                                            "        pm.response.to.have.status(Number(expectedStatus));",
+                                            "    });",
+                                            "    if (pm.response.code === 200) {",
+                                            "        const responseData = pm.response.json();",
+                                            "        pm.test('Response indicates success', function () {",
+                                            "            pm.expect(responseData).to.be.an('object').and.to.have.property('success', true);",
+                                            "        });",
+                                            "    } else if ([401, 403, 404, 422].includes(pm.response.code)) {",
+                                            "        const responseData = pm.response.json();",
+                                            "        pm.test('Response contains error or validation fields', function () {",
+                                            "            pm.expect(responseData).to.have.any.keys('message', 'error', 'email', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob');",
+                                            "        });",
+                                            "    } else if (pm.response.code === 405) {",
+                                            "        pm.test('Method Not Allowed - Bug detected', function () {",
+                                            "            pm.expect.fail('API returned 405 Method Not Allowed, indicating a possible route misconfiguration');",
+                                            "        });",
+                                            "    }",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"first_name\": \"{{first_name}}\", \"last_name\": \"{{last_name}}\", \"address\": \"{{address}}\", \"city\": \"{{city}}\", \"state\": \"{{state}}\", \"country\": \"{{country}}\", \"postcode\": \"{{postcode}}\", \"phone\": \"{{phone}}\", \"dob\": \"{{dob}}\", \"email\": \"{{email_update}}\"}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/users/{{userId}}",
+                                    "host": ["{{base_url}}"],
+                                    "path": ["users", "{{userId}}"]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
                 }
             ]
         }
@@ -227,6 +286,10 @@
         },
         {
             "key": "access_token",
+            "value": ""
+        },
+        {
+            "key": "run_api",
             "value": ""
         }
     ]

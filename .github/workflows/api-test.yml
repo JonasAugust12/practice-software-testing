@@ -63,58 +63,24 @@ jobs:
       - run: npm install -g newman newman-reporter-htmlextra
 
       # Bước 7: Chạy kiểm thử Newman
-      - name: Verify CSV files
-        run: |
-          echo "Login CSV:"
-          cat sprint5-with-bugs/API/tests/api/login-data.csv
-          echo "Register CSV:"
-          cat sprint5-with-bugs/API/tests/api/register-data.csv
-          echo "Update CSV:"
-          cat sprint5-with-bugs/API/tests/api/update-data.csv
-
-      - name: Run Newman Tests - Login 🚀
+      - name: Run Newman Tests 🚀
         run: |
           newman run sprint5-with-bugs/API/tests/api/collection.json \
             -e sprint5-with-bugs/API/tests/api/environment.json \
-            --iteration-data sprint5-with-bugs/API/tests/api/login-data.csv \
+            --iteration-data sprint5-with-bugs/API/tests/api/users-data.csv \
             --reporters cli,junit,htmlextra \
-            --reporter-junit-export ./newman-report-login.xml \
-            --reporter-htmlextra-export ./newman-report-login.html
-          ls -l newman-report-login.*
-
-      - name: Run Newman Tests - Register 🚀
-        run: |
-          newman run sprint5-with-bugs/API/tests/api/collection.json \
-            -e sprint5-with-bugs/API/tests/api/environment.json \
-            --iteration-data sprint5-with-bugs/API/tests/api/register-data.csv \
-            --reporters cli,junit,htmlextra \
-            --reporter-junit-export ./newman-report-register.xml \
-            --reporter-htmlextra-export ./newman-report-register.html
-          ls -l newman-report-register.*
-
-      - name: Run Newman Tests - Update 🚀
-        run: |
-          newman run sprint5-with-bugs/API/tests/api/collection.json \
-            -e sprint5-with-bugs/API/tests/api/environment.json \
-            --iteration-data sprint5-with-bugs/API/tests/api/update-data.csv \
-            --reporters cli,junit,htmlextra \
-            --reporter-junit-export ./newman-report-update.xml \
-            --reporter-htmlextra-export ./newman-report-update.html
-          ls -l newman-report-update.*
+            --reporter-junit-export newman-report.xml \
+            --reporter-htmlextra-export newman-report.html
 
       # Bước 8: Upload báo cáo (luôn chạy)
-      - name: Upload Test Reports 📊
+      - name: Upload Test Report 📊
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: newman-reports
+          name: newman-report
           path: |
-            newman-report-login.html
-            newman-report-login.xml
-            newman-report-register.html
-            newman-report-register.xml
-            newman-report-update.html
-            newman-report-update.xml
+            newman-report.html
+            newman-report.xml
 
       # Bước 9: Dọn dẹp (luôn chạy)
       - name: Cleanup 🧹

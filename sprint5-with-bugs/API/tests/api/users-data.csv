@@ -1,17 +1,18 @@
-api,email,password,first_name,last_name,address,city,state,country,postcode,phone,dob,userId,expected_status
+api,email,password,first_name,last_name,address,city,state,country,postcode,phone,dob,email_update,userId,expected_status
 login,admin@practicesoftwaretesting.com,welcome01,,,,,,,200
 login,customer@practicesoftwaretesting.com,welcome01,,,,,,,200
 login,invalid@practicesoftwaretesting.com,welcome01,,,,,,,401
 login,customer@practicesoftwaretesting.com,wrongpass,,,,,,,401
 login,invalid-email,welcome01,,,,,,,422
 login,customer@practicesoftwaretesting.com,welcome01,,,,,,,400
-register,alice.smith@example.com,P@ssw0rd123,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,201
-register,customer@practicesoftwaretesting.com,P@ssw0rd123,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,422
-register,alice.smith2@example.com,password,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,422
-register,alice.smith3@example.com,P@ssw0rd123,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,2010-01-01,,422
-update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,2,200
-update,admin@practicesoftwaretesting.com,wrongpass,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,2,401
-update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,999,404
-update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,invalid-email,2,422
-update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,2,200
-update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,3,403
+login,customer@practicesoftwaretesting.com,welcome01,,,,,,,403
+register,alice.smith@example.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,201
+register,customer@practicesoftwaretesting.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,422
+register,alice.smith2@example.com,weakpass,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,422
+register,alice.smith3@example.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,2010-01-01,,422
+update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,200
+update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,200
+update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,3,403
+update,admin@practicesoftwaretesting.com,wrongpass,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,401
+update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,999,404
+update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,invalid-email,2,422
