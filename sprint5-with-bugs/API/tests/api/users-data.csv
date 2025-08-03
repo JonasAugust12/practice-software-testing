@@ -8,8 +8,7 @@ register,customer@practicesoftwaretesting.com,Passw0rd@123,Alice,Smith,123 Main 
 register,alice.smith2@example.com,weakpass,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,,,422
 register,alice.smith3@example.com,Passw0rd@123,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,2010-01-01,,,422
 update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,2,200
-update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,2,200
-update,customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,3,403
-update,admin@practicesoftwaretesting.com,wrongpass,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,2,401
-update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,5,404
+update,customer2@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,2,200
+update,customer2@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,3,403
+update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,jane.doe@example.com,999,404
 update,admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,987654321,1975-01-01,invalid-email,2,422

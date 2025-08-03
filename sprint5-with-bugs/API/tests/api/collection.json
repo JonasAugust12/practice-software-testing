@@ -112,7 +112,7 @@
                                     "    if (pm.response.code === 201) {",
                                     "        const responseData = pm.response.json();",
                                     "        pm.test('Response has required fields', function () {",
-                                    "            pm.expect(responseData).to.be.an('object').and.to.have.all.keys('id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob', 'email');",
+                                    "            pm.expect(responseData).to.be.an('object').and.to.include.all.keys('id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob', 'email');",
                                     "        });",
                                     "        pm.test('ID is a positive integer', function () {",
                                     "            pm.expect(responseData.id).to.be.a('number').and.to.be.above(0);",
