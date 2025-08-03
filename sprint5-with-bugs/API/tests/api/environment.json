@@ -8,6 +8,11 @@
             "enabled": true
         },
         {
+            "key": "access_token",
+            "value": "",
+            "enabled": true
+        },
+        {
             "key": "api_timeout",
             "value": "10000",
             "enabled": true
