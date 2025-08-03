@@ -15,7 +15,9 @@
                     "script": {
                         "exec": [
                             "pm.test('Status code matches expected', function () {",
-                            "    pm.response.to.have.status(Number(pm.iterationData.get('expected_status')));",
+                            "    const expectedStatus = pm.iterationData.get('expected_status');",
+                            "    pm.expect(expectedStatus, 'Invalid expected_status in CSV').to.be.a('string').and.match(/^[0-9]+$/);",
+                            "    pm.response.to.have.status(Number(expectedStatus));",
                             "});",
                             "if (pm.response.code === 200) {",
                             "    const responseData = pm.response.json();",
@@ -31,12 +33,11 @@
                             "    pm.test('Expires_in is a positive integer', function () {",
                             "        pm.expect(responseData.expires_in).to.be.a('number').and.to.be.above(0);",
                             "    });",
-                            "    // Lưu access_token để dùng cho API PUT",
                             "    pm.environment.set('access_token', responseData.access_token);",
-                            "} else if (pm.response.code === 401 || pm.response.code === 422) {",
+                            "} else if ([400, 401, 403, 422].includes(pm.response.code)) {",
                             "    const responseData = pm.response.json();",
-                            "    pm.test('Response contains error field', function () {",
-                            "        pm.expect(responseData).to.have.property('error').or.to.have.any.keys('email', 'password');",
+                            "    pm.test('Response contains error or validation fields', function () {",
+                            "        pm.expect(responseData).to.have.any.keys('error', 'message', 'email', 'password');",
                             "    });",
                             "}"
                         ],
@@ -72,7 +73,9 @@
                     "script": {
                         "exec": [
                             "pm.test('Status code matches expected', function () {",
-                            "    pm.response.to.have.status(Number(pm.iterationData.get('expected_status')));",
+                            "    const expectedStatus = pm.iterationData.get('expected_status');",
+                            "    pm.expect(expectedStatus, 'Invalid expected_status in CSV').to.be.a('string').and.match(/^[0-9]+$/);",
+                            "    pm.response.to.have.status(Number(expectedStatus));",
                             "});",
                             "if (pm.response.code === 201) {",
                             "    const responseData = pm.response.json();",
@@ -88,7 +91,7 @@
                             "} else if (pm.response.code === 422) {",
                             "    const responseData = pm.response.json();",
                             "    pm.test('Response contains validation errors', function () {",
-                            "        pm.expect(responseData).to.have.any.keys('password', 'email', 'dob');",
+                            "        pm.expect(responseData).to.have.any.keys('password', 'email', 'dob', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone');",
                             "    });",
                             "}"
                         ],
@@ -124,17 +127,19 @@
                     "script": {
                         "exec": [
                             "pm.test('Status code matches expected', function () {",
-                            "    pm.response.to.have.status(Number(pm.iterationData.get('expected_status')));",
+                            "    const expectedStatus = pm.iterationData.get('expected_status');",
+                            "    pm.expect(expectedStatus, 'Invalid expected_status in CSV').to.be.a('string').and.match(/^[0-9]+$/);",
+                            "    pm.response.to.have.status(Number(expectedStatus));",
                             "});",
                             "if (pm.response.code === 200) {",
                             "    const responseData = pm.response.json();",
                             "    pm.test('Response indicates success', function () {",
                             "        pm.expect(responseData).to.be.an('object').and.to.have.property('success', true);",
                             "    });",
-                            "} else if (pm.response.code === 401 || pm.response.code === 404 || pm.response.code === 422) {",
+                            "} else if ([401, 403, 404, 422].includes(pm.response.code)) {",
                             "    const responseData = pm.response.json();",
-                            "    pm.test('Response contains error message', function () {",
-                            "        pm.expect(responseData).to.have.property('message').or.to.have.any.keys('email', 'first_name');",
+                            "    pm.test('Response contains error or validation fields', function () {",
+                            "        pm.expect(responseData).to.have.any.keys('message', 'error', 'email', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'postcode', 'phone', 'dob');",
                             "    });",
                             "}"
                         ],
