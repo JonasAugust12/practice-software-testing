@@ -1,0 +1,7 @@
+email,password,first_name,last_name,address,city,state,country,postcode,phone,dob,email_update,userId,expected_status
+admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,200
+customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,200
+customer@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,3,403
+admin@practicesoftwaretesting.com,wrongpass,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,2,401
+admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,jane.doe@example.com,999,404
+admin@practicesoftwaretesting.com,welcome01,Jane,Doe,456 Main St,Los Angeles,CA,USA,90001,0987654321,1975-01-01,invalid-email,2,422

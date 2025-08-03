@@ -1,0 +1,5 @@
+email,password,first_name,last_name,address,city,state,country,postcode,phone,dob,expected_status
+alice.smith@example.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,201
+customer@practicesoftwaretesting.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,422
+alice.smith2@example.com,weakpass,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,1980-01-01,422
+alice.smith3@example.com,welcome01,Alice,Smith,123 Main St,New York,NY,USA,10001,1234567890,2010-01-01,422
