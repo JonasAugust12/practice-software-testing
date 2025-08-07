@@ -1,5 +1,7 @@
 email,password,expected_status
 admin@practicesoftwaretesting.com,welcome01,200
 customer@practicesoftwaretesting.com,welcome01,200
-customer2@practicesoftwaretesting.com,wrongpass,401
-customer1@practicesoftwaretesting.com,wrongpass,401
+invalid@practicesoftwaretesting.com,wrongpass,401
+customer@practicesoftwaretesting.com,wrongpass,401
+customer2@practicesoftwaretesting.com,welcome01,403
+customer3@practicesoftwaretesting.com,welcome01,423
