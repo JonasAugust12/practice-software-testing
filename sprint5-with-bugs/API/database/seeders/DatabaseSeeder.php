@@ -20,3 +20,4 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Toolshop database seeded!');
     }
 }
+/* */
